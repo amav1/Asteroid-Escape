@@ -8,6 +8,6 @@ class Colors:
     purple = (166, 0, 247)
     cyan = (21, 204, 209)
 
-    def get_cell_colors(c):
-        return [c.red, green, c.dark_grey, c.blue, c.yellow, c.orange, c.purple, c.cyan]
-        
+    @staticmethod
+    def get_cell_colors():
+        return [Colors.red, Colors.green, Colors.dark_grey, Colors.blue, Colors.yellow, Colors.orange, Colors.purple, Colors.cyan]

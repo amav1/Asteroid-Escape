@@ -1,19 +1,29 @@
 import pygame
 import sys
-from block import IBlock
+import random
+from block import IBlock, OBlock
 
 pygame.init()
 
-screen = pygame.display.set_mode((300,600))
+screen = pygame.display.set_mode((300, 600))
 pygame.display.set_caption("Tetris")
 
 clock = pygame.time.Clock()
-block = IBlock()
+
+def create_random_block():
+    block_type = random.choice([IBlock, OBlock])
+    return block_type()
+
+current_block = create_random_block()
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit() 
-    block.draw(screen)
-    pygame.display.flip()  
+            sys.exit()
+
+
+    current_block.draw(screen)
+
+    pygame.display.flip() 
+    clock.tick(30) 
