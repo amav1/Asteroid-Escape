@@ -1,5 +1,6 @@
-import pygame,sys
-from block import IBlock, OBlock 
+import pygame
+import sys
+from block import IBlock
 
 pygame.init()
 
@@ -8,10 +9,12 @@ pygame.display.set_caption("Tetris")
 
 clock = pygame.time.Clock()
 block = IBlock()
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+    screen.fill((0, 0, 0))  
     block.draw(screen)
-    pygame.flip()
+    pygame.display.flip()  
