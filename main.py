@@ -14,7 +14,6 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
-    screen.fill((0, 0, 0))  
+            sys.exit() 
     block.draw(screen)
     pygame.display.flip()  
