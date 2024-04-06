@@ -44,7 +44,7 @@ def draw_grid():
     for x in range(0, COLS):
         for y in range(0, ROWS):
             grid = pygame.Rect(x * Square, y * Square, Square, Square)
-            pygame.draw.rect(screen, [60, 60, 60], grid)
+            pygame.draw.rect(screen, (200, 200, 200), grid, 1)
 
 #Random shape
 # def get_shape():
@@ -52,8 +52,8 @@ def draw_grid():
 #     return random.choice(Colors)
 
 # Define colors
-background_color = (255, 255, 255)  # White
-object_color = (255, 0, 0)          # Red
+background_color = (0, 0, 0)  
+object_color = (255, 0, 0)        
 
 
 
@@ -110,7 +110,7 @@ while running:
     elapsed_seconds = elapsed_time // 1000
 
     
-    timer_text = font.render("Time: " + str(elapsed_seconds), True, (0, 0, 0))
+    timer_text = font.render("Time: " + str(elapsed_seconds), True, (255, 255, 255))
     screen.blit(timer_text, (10, 10))
 
     pygame.display.flip()
