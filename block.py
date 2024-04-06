@@ -1,9 +1,9 @@
 import pygame
-from position_block import Position
 from colors_block import Colors
+from position_block import Position
 
 class Block:
-    def __init__ (self, id):
+    def __init__ (self, id=0):
         self.id = id
         self.rotation_state = 0
         self.colors = Colors.get_cell_colors()
@@ -32,3 +32,4 @@ class OBlock (Block):
             2: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)],
             3: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)]
         }
+
