@@ -1,36 +1,28 @@
 import pygame
 from colors_block import Colors
+import random
 
 
 
 class Block:
-    def __init__ (self, id=0):
-        self.id = id
-        self.rotation_state = 0
-        self.colors = Colors.get_cell_colors()
+    Shapes = {
+        'I' : [[1, 5, 9, 13], [4, 5, 6, 7]],
+        'O' : [[4, 5, 9, 10], [2, 6, 5, 9]],
+        'L' : [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]],
+        'J' : [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]]
+}   
 
-    def draw(self, screen):
-        for position in self.cells[self.rotation_state]:
-            cell_color = self.colors[self.id % len(self.colors)]
-            pygame.draw.rect(screen, cell_color, (position.column * 20, position.row * 20, 20, 20))
+    Types = ['I', 'O', 'L', 'J']
 
-# class IBlock (Block):
-#     def __init__(self):
-#         super().__init__(id=1)
-#         self.cells = {
-#             0: [Position(1,0), Position(1,1), Position(1,2), Position(1, 3)],
-#             1: [Position(0,2), Position(1,2), Position(2,2), Position(3,2)],
-#             2: [Position(2,0), Position(2,1), Position(2,2), Position(2,3)],
-#             3: [Position(0,1), Position(1,1), Position(2,1), Position(3,1)]
-#         }
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.type = random.choice(Block.Types)
+        self.shape = self.Shapes[self.type]
+        self.rotation = 0
 
-# class OBlock (Block):
-#     def __init__(self):
-#         super().__init__(id=2)
-#         self.cells = {
-#             0: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)],
-#             1: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)],
-#             2: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)],
-#             3: [Position(0,0), Position(0,1), Position(1,0), Position(1,1)]
-#         }
+    def image(self):
+        return self.shape[self.rotation]
+    
+    
 

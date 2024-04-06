@@ -2,13 +2,8 @@ import pygame
 import sys
 import random
 from block import Block
-from colors_block import Colors  
+from colors_block import Colors
 
-
-
-Block()
-Colors()
- 
 
 
 # Initialize Pygame
@@ -20,10 +15,8 @@ screen_height = 640
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Catching Falling Objects')
 
-#Shape types
-# shapes = [IBlock, OBlock]
 
-#Create grid 
+# Create grid 
 def create_grid(locked_positions={}):
     grid = [[(0,0,0) for x in range(10)] for x in range(20)]
  
@@ -46,10 +39,6 @@ def draw_grid():
             grid = pygame.Rect(x * Square, y * Square, Square, Square)
             pygame.draw.rect(screen, (128, 128, 128), grid, 1)
 
-#Random shape
-# def get_shape():
-#     return random.choice(shapes)
-#     return random.choice(Colors)
 
 # Define colors
 background_color = (0, 0, 0)  
@@ -73,10 +62,12 @@ font = pygame.font.SysFont('cambria', 30)
 
 
 
-# Main game loop
+#Main game loop
 global grid
 locked_positions = {}  
 grid = create_grid(locked_positions)
+b = Block(5,0)
+
 running = True
 while running:
     fall_speed = 0.27
@@ -89,6 +80,13 @@ while running:
                 object_x -= object_size
             elif event.key == pygame.K_RIGHT:
                 object_x += object_size
+
+    for i in range(4):
+        for j in range(4):
+            if i * 4 + j in Block.image: 
+                x = Square * (b.x + j)
+                y = Square * (b.y + j)
+                pygame.draw.rect(screen, Colors.red, (x, y, Square, Square))
 
     object_y += object_speed
     if object_y > screen_height:
