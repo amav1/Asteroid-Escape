@@ -9,4 +9,5 @@ class Block:
 
 
     def draw(self, screen):
+        print("Hello")
         pass

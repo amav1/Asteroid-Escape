@@ -3,6 +3,7 @@ import sys
 import random
 from block import IBlock, OBlock 
 from colors_block import Colors  
+from block_shape import Block
 
 pygame.init()
 
