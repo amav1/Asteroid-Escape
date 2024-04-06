@@ -27,7 +27,7 @@ def create_grid(locked_positions={}):
     return grid
 
 #Draw grid
-ROWS, COLS = 15, 9
+ROWS, COLS = 12, 9
 Square = 53
 Res = COLS*Square, ROWS * Square
 
