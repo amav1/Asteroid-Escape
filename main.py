@@ -6,7 +6,7 @@ from colors_block import Colors
 
 pygame.init()
 
-screen = pygame.display.set_mode((300, 600))
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Tetris")
 
 clock = pygame.time.Clock()
