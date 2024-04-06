@@ -1,7 +1,8 @@
 import pygame
 import sys
 import random
-from block import IBlock, OBlock
+from block import IBlock, OBlock 
+from colors_block import Colors  
 
 pygame.init()
 
@@ -22,8 +23,9 @@ while True:
             pygame.quit()
             sys.exit()
 
+    screen.fill((0, 0, 0)) 
 
     current_block.draw(screen)
 
-    pygame.display.flip() 
-    clock.tick(30) 
+    pygame.display.flip()
+    clock.tick(30)

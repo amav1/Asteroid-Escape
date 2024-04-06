@@ -7,5 +7,6 @@ class Block:
         self.rotation_state = 0
         self.colors = Colors.get_cell_colors()
 
+
     def draw(self, screen):
         pass
