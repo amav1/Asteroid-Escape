@@ -1,13 +1,14 @@
 import pygame
 import sys
 import random
-from block import IBlock, OBlock, Block
+from block import Block
 from colors_block import Colors  
 
 
 
 Block()
 Colors()
+
 
 
 s_width = 800
@@ -31,7 +32,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Catching Falling Objects')
 
 #Shape types
-shapes = [IBlock, OBlock]
+# shapes = [IBlock, OBlock]
 
 #Create grid 
 def create_grid(locked_positions={}):
@@ -45,18 +46,21 @@ def create_grid(locked_positions={}):
     return grid
 
 #Draw grid
-def draw_grid(surface, row, col):
-    sx = top_left_x
-    sy = top_left_y
-    for i in range(row):
-        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + play_width, sy + i * 30))  
-        for j in range(col):
-            pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + play_height))
+ROWS, COLS = 20, 10
+Square = 35
+Res = COLS*Square, ROWS * Square
+
+
+def draw_grid():
+    for x in range(0, COLS):
+        for y in range(0, ROWS):
+            grid = pygame.Rect(x * Square, y * Square, Square, Square)
+            pygame.draw.rect(screen, [60, 60, 60], grid)
 
 #Random shape
-def get_shape():
-    return random.choice(shapes)
-    return random.choice(Colors)
+# def get_shape():
+#     return random.choice(shapes)
+#     return random.choice(Colors)
 
 # Define colors
 background_color = (255, 255, 255)  # White
@@ -84,13 +88,10 @@ font = pygame.font.SysFont('cambria', 30)
 global grid
 locked_positions = {}  
 grid = create_grid(locked_positions)
-change_piece = False
 running = True
-current_piece = get_shape()
-next_piece = get_shape()
 while running:
     fall_speed = 0.27
-    grid = create_grid(locked_positions)
+    draw_grid()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
