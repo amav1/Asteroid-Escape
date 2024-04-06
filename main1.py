@@ -35,8 +35,8 @@ def create_grid(locked_positions={}):
     return grid
 
 #Draw grid
-ROWS, COLS = 20, 10
-Square = 35
+ROWS, COLS = 15, 9
+Square = 53
 Res = COLS*Square, ROWS * Square
 
 
@@ -44,7 +44,7 @@ def draw_grid():
     for x in range(0, COLS):
         for y in range(0, ROWS):
             grid = pygame.Rect(x * Square, y * Square, Square, Square)
-            pygame.draw.rect(screen, (200, 200, 200), grid, 1)
+            pygame.draw.rect(screen, (128, 128, 128), grid, 1)
 
 #Random shape
 # def get_shape():
@@ -80,7 +80,7 @@ grid = create_grid(locked_positions)
 running = True
 while running:
     fall_speed = 0.27
-    draw_grid()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -102,13 +102,12 @@ while running:
         object_x = screen_width - object_size
 
     # Drawing
-    screen.fill(background_color)
+    screen.fill(background_color)  
+    draw_grid()  
     pygame.draw.rect(screen, object_color, (object_x, object_y, object_size, object_size))
 
     elapsed_time = pygame.time.get_ticks() - start_time
-
     elapsed_seconds = elapsed_time // 1000
-
     
     timer_text = font.render("Time: " + str(elapsed_seconds), True, (255, 255, 255))
     screen.blit(timer_text, (10, 10))
@@ -116,5 +115,5 @@ while running:
     pygame.display.flip()
 
     pygame.time.Clock().tick(30)
-pygame.quit()
 
+pygame.quit()
