@@ -1,5 +1,6 @@
 import pygame
 from position_block import Position
+from colors_block import Colors
 
 class Block:
     def __init__ (self, id):
