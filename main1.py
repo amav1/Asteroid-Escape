@@ -8,19 +8,17 @@ pygame.init()
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Catching Falling Objects')
+pygame.display.set_caption('Free falling object')
 
 # Define colors
 background_color = (255, 255, 255)  # White
 object_color = (255, 0, 0)          # Red
 
-# Define the falling object and player properties
+
 object_size = 50
 object_x = screen_width // 2
 object_y = 0
 object_speed = 5
-is_paused = False
-
 
 
 # Game clock
@@ -40,7 +38,7 @@ while running:
 
     object_y += object_speed
     if object_y > screen_height:
-        object_x = random.randint(0, screen_width - object_size)
+        object_x = screen_width //2 
         object_y = 0
 
     # Boundary checking
