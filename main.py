@@ -1,8 +1,7 @@
 import pygame
 import sys
 import random
-from block import Block
-from colors_block import Colors
+from block import Block, Colors
 
 
 
@@ -81,12 +80,6 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 object_x += object_size
 
-    for i in range(4):
-        for j in range(4):
-            if i * 4 + j in Block.image: 
-                x = Square * (b.x + j)
-                y = Square * (b.y + j)
-                pygame.draw.rect(screen, Colors.red, (x, y, Square, Square))
 
     object_y += object_speed
     if object_y > screen_height:
