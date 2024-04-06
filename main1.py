@@ -7,10 +7,10 @@ from position_block import Position
 
 
 
-IBlock() 
-OBlock()
-Block()
-Colors()
+# IBlock() 
+# OBlock()
+# Block()
+# Colors()
 
 
 s_width = 800
