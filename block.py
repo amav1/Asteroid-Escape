@@ -1,6 +1,11 @@
 import pygame
 from colors_block import Colors
-from position_block import Position
+
+class Position: 
+    ROWS, COLS = 20, 10
+    Square = 35
+    Res = COLS*Square, ROWS * Square
+
 
 class Block:
     def __init__ (self, id=0):

@@ -3,14 +3,11 @@ import sys
 import random
 from block import IBlock, OBlock, Block
 from colors_block import Colors  
-from position_block import Position
 
 
 
-# IBlock() 
-# OBlock()
-# Block()
-# Colors()
+Block()
+Colors()
 
 
 s_width = 800
@@ -59,6 +56,7 @@ def draw_grid(surface, row, col):
 #Random shape
 def get_shape():
     return random.choice(shapes)
+    return random.choice(Colors)
 
 # Define colors
 background_color = (255, 255, 255)  # White
