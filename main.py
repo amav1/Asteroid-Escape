@@ -61,16 +61,14 @@ font = pygame.font.SysFont('cambria', 30)
 
 
 
-#Main game loop
+# Main game loop
 global grid
-locked_positions = {}  
+locked_positions = {}
 grid = create_grid(locked_positions)
-b = Block(5,0)
 
 running = True
+object_block = None  
 while running:
-    fall_speed = 0.27
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -80,11 +78,18 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 object_x += object_size
 
+    # Calculate falling speed
+    elapsed_time = pygame.time.get_ticks() - start_time
+    elapsed_seconds = elapsed_time / 1000  
+    if elapsed_seconds % 50 == 0 and elapsed_seconds != 0:
+        object_speed += 1  
 
-    object_y += object_speed
-    if object_y > screen_height:
-        object_x = random.randint(0, screen_width - object_size)
-        object_y = 0
+    if object_block is None or object_y >= screen_height - object_size:  
+        object_block = Block(random.randint(0, screen_width - object_size), 0)  
+        object_x = object_block.x * Square
+        object_y = object_block.y * Square
+    else:
+        object_y += object_speed  
 
     # Boundary checking
     if object_x <= 0:
@@ -93,13 +98,10 @@ while running:
         object_x = screen_width - object_size
 
     # Drawing
-    screen.fill(background_color)  
-    draw_grid()  
-    pygame.draw.rect(screen, object_color, (object_x, object_y, object_size, object_size))
+    screen.fill(background_color)
+    draw_grid()
+    pygame.draw.rect(screen, object_block.color, (object_x, object_y, object_size, object_size))  
 
-    elapsed_time = pygame.time.get_ticks() - start_time
-    elapsed_seconds = elapsed_time // 1000
-    
     timer_text = font.render("Time: " + str(elapsed_seconds), True, (255, 255, 255))
     screen.blit(timer_text, (10, 10))
 
