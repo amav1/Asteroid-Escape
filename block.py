@@ -24,7 +24,7 @@ class Block:
 
     def image(self):
         return self.shape[self.rotation]
-
+    
 class Colors:
     colors_list = [
         (232, 18, 18), 
@@ -36,7 +36,5 @@ class Colors:
         (166, 0, 247), 
         (21, 204, 209)  
     ]
-
-   
 
 
