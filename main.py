@@ -1,9 +1,6 @@
-import pygame
-import sys
 import random
-from block import Block, Colors
-
-
+import pygame
+from block import Figure, Colors
 
 # Initialize Pygame
 pygame.init()
@@ -12,8 +9,7 @@ pygame.init()
 screen_width = 480
 screen_height = 640
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Catching Falling Objects')
-
+pygame.display.set_caption('Tetris')
 
 # Create grid 
 def create_grid(locked_positions={}):
@@ -26,40 +22,33 @@ def create_grid(locked_positions={}):
                 grid[i][j] = c
     return grid
 
-#Draw grid
+# Draw grid
 ROWS, COLS = 12, 9
-Square = 53
-Res = COLS*Square, ROWS * Square
-
+Square = 53  
+grid_width = COLS * Square
+grid_height = ROWS * Square
+grid_x = (screen_width - grid_width) // 2
+grid_y = (screen_height - grid_height) // 2 
 
 def draw_grid():
     for x in range(0, COLS):
         for y in range(0, ROWS):
-            grid = pygame.Rect(x * Square, y * Square, Square, Square)
+            grid = pygame.Rect(grid_x + x * Square, grid_y + y * Square, Square, Square)
             pygame.draw.rect(screen, (128, 128, 128), grid, 1)
 
 
-# Define colors
 background_color = (0, 0, 0)  
 object_color = (255, 0, 0)        
 
 
-
-# Define the falling object and player properties
-object_size = 50
-object_x = screen_width // 2
-object_y = 0
+object_x = random.randint(grid_x, grid_x + grid_width - Square)  
+object_y = -Square  
 object_speed = 5
 is_paused = False
 
-
-
 # Game clock
-
 start_time = pygame.time.get_ticks()  
 font = pygame.font.SysFont('cambria', 30)
-
-
 
 # Main game loop
 global grid
@@ -67,16 +56,16 @@ locked_positions = {}
 grid = create_grid(locked_positions)
 
 running = True
-object_block = None  
+figure = None  
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                object_x -= object_size
+                object_x -= Square
             elif event.key == pygame.K_RIGHT:
-                object_x += object_size
+                object_x += Square
 
     # Calculate falling speed
     elapsed_time = pygame.time.get_ticks() - start_time
@@ -84,23 +73,30 @@ while running:
     if elapsed_seconds % 50 == 0 and elapsed_seconds != 0:
         object_speed += 1  
 
-    if object_block is None or object_y >= screen_height - object_size:  
-        object_block = Block(random.randint(0, screen_width - object_size), 0)  
-        object_x = object_block.x * Square
-        object_y = object_block.y * Square
+    if figure is None or object_y >= screen_height - Square:  
+        object_x = random.randint(grid_x, grid_x + grid_width - Square)
+        object_y = -Square  
+        figure = Figure(object_x, grid_y)  
     else:
         object_y += object_speed  
 
     # Boundary checking
-    if object_x <= 0:
-        object_x = 0
-    if object_x >= screen_width - object_size:
-        object_x = screen_width - object_size
+    if object_x < grid_x:
+        object_x = grid_x
+    elif object_x > grid_x + grid_width - Square:
+        object_x = grid_x + grid_width - Square
 
     # Drawing
     screen.fill(background_color)
     draw_grid()
-    pygame.draw.rect(screen, object_block.color, (object_x, object_y, object_size, object_size))  
+    for i in range(4):
+        for j in range(4):
+            p = i * 4 + j
+            if p in figure.image():
+                pygame.draw.rect(screen, figure.color,
+                                 [object_x + Square * j + 1,
+                                  object_y + Square * i + 1,
+                                  Square - 2, Square - 2])
 
     timer_text = font.render("Time: " + str(elapsed_seconds), True, (255, 255, 255))
     screen.blit(timer_text, (10, 10))
