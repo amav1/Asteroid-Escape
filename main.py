@@ -36,6 +36,11 @@ def draw_grid():
             grid = pygame.Rect(grid_x + x * Square, grid_y + y * Square, Square, Square)
             pygame.draw.rect(screen, (128, 128, 128), grid, 1)
 
+            
+#Adding new piece for generation
+def new_piece():
+    pass
+
 
 background_color = (0, 0, 0)  
 object_color = (255, 0, 0)        
@@ -91,6 +96,12 @@ while running:
         object_x = grid_x
     elif object_x > grid_x + grid_width - Square:
         object_x = grid_x + grid_width - Square
+    # checking screen boundaries to lock objects:
+    if object_y < grid_y:
+        object_y = grid_y
+    elif object_y > grid_y + grid_height - Square:
+        object_y = grid_y + grid_height - Square
+        
 
     # Drawing
     screen.fill(background_color)
