@@ -24,17 +24,25 @@ def create_grid(locked_positions={}):
 
 # Draw grid
 ROWS, COLS = 12, 9
-Square = 53  
+Square = 53
 grid_width = COLS * Square
 grid_height = ROWS * Square
 grid_x = (screen_width - grid_width) // 2
 grid_y = (screen_height - grid_height) // 2 
 
-def draw_grid():
+def draw_grid(locked_positions={}):
     for x in range(0, COLS):
         for y in range(0, ROWS):
             grid = pygame.Rect(grid_x + x * Square, grid_y + y * Square, Square, Square)
             pygame.draw.rect(screen, (128, 128, 128), grid, 1)
+#   putting figures in a position array
+#     for y in range(0,ROWS):
+#         for x in range(0, COLS):
+#             if (x,y) in locked_positions:
+#                 color = locked_positions[
+#                     (x,y)]
+#                 grid[y][x] = color
+
 
 
 background_color = (0, 0, 0)  
@@ -57,6 +65,7 @@ grid = create_grid(locked_positions)
 
 running = True
 figure = None  
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -91,6 +100,16 @@ while running:
         object_x = grid_x
     elif object_x > grid_x + grid_width - Square:
         object_x = grid_x + grid_width - Square
+    # checking screen boundaries to lock objects:
+    if object_y < grid_y:
+        object_y = grid_y
+    if object_y > grid_y + grid_height - Square:
+        object_y = grid_y + grid_height - Square
+    # This generates the next object when the object hits the bottom of the y-axis
+        object_x = random.randint(grid_x, grid_x + grid_width - Square)
+        object_y = -Square  
+        figure = Figure(object_x, grid_y)
+
 
     # Drawing
     screen.fill(background_color)

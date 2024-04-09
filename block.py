@@ -23,6 +23,9 @@ class Figure:
 
     def image(self):
         return self.figures[self.type][self.rotation]
+    
+    def rotate(self):
+        self.rotation = (self.rotation + 1) % len(self.figures[self.type])
 
 class Colors:
     colors_list = [
