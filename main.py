@@ -66,6 +66,12 @@ while running:
                 object_x -= Square
             elif event.key == pygame.K_RIGHT:
                 object_x += Square
+            # adding rotation of object
+            elif event.key == pygame.K_UP:
+                figure.rotate()
+            #Down will drop the figure to the bottom
+            elif event.key == pygame.K_DOWN:
+                pass
 
     # Calculate falling speed
     elapsed_time = pygame.time.get_ticks() - start_time
