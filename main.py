@@ -9,7 +9,7 @@ pygame.init()
 pygame.display.set_caption('Space Game')
 win_icon = pygame.image.load("./Assets/spaceship.png")
 pygame.display.set_icon(win_icon)
-screen = pygame.display.set_mode((900,600))
+screen = pygame.display.set_mode((900,550))
 
 #Background image
 bg = pygame.image.load("./Assets/bg.jpg")
@@ -31,26 +31,9 @@ ROWS, COLS = 12, 9
 Square = 53
 grid_width = COLS * Square
 grid_height = ROWS * Square
-# grid_x = (screen_width - grid_width) // 2
-# grid_y = (screen_height - grid_height) // 2 
-
-# def draw_grid(locked_positions={}):
-#     for x in range(0, COLS):
-#         for y in range(0, ROWS):
-#             grid = pygame.Rect(grid_x + x * Square, grid_y + y * Square, Square, Square)
-#             pygame.draw.rect(screen, (128, 128, 128), grid, 1)
-#             if (y,x) in locked_positions:
-#                 print("hello")
-#                 color = locked_positions[
-#                     (x,y)]
-#                 grid[y][x] = color
-
-            
-
 
 # background_color = (0, 0, 0)  
 object_color = (255, 0, 0)        
-
 
 # object_x = random.randint(grid_x, grid_x + grid_width - Square)  
 # object_y = -Square  
@@ -61,8 +44,10 @@ is_paused = False
 player_image = pygame.image.load("./Assets/spaceship.png")
 player_x = 410
 player_y = 480
+change_in_x_pos = 0
+change_in_y_pos = 0
 
-def player():
+def player(player_x, player_y):
     screen.blit(player_image, (player_x, player_y))
 
 # Game clock
@@ -74,7 +59,7 @@ global grid
 locked_positions = {}
 grid = create_grid(locked_positions)
 
-running = True
+running = True 
 figure = None  
 
 while running:
@@ -84,55 +69,38 @@ while running:
 # Logic for a controllable spaceship sprite
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                pass
+                change_in_x_pos = -3
             elif event.key == pygame.K_RIGHT:
-                pass
+                change_in_x_pos = 3
+            elif event.key == pygame.K_UP:
+                change_in_y_pos = -3
+            elif event.key == pygame.K_DOWN:
+                change_in_y_pos = 3
+# Check for keystroke release
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                change_in_x_pos = 0
+        
 
-    
-    # Calculate falling speed
-    # elapsed_time = pygame.time.get_ticks() - start_time
-    # elapsed_seconds = elapsed_time / 1000  
-    # if elapsed_seconds % 50 == 0 and elapsed_seconds != 0:
-    #     object_speed += 1  
+    screen.fill((0, 0, 0 ))
 
-    # if figure is None or object_y >= screen_height - Square:  
-    #     object_x = random.randint(grid_x, grid_x + grid_width - Square)
-    #     object_y = -Square  
-    #     figure = Figure(object_x, grid_y)  
-    # else:
-    #     object_y += object_speed  
+    if player_x <= 0:
+        player_x = 0
+    elif player_x >= 900:
+        player_x = 900
 
-    # Boundary checking
-    # if object_x < grid_x:
-    #     object_x = grid_x
-    # elif object_x > grid_x + grid_width - Square:
-    #     object_x = grid_x + grid_width - Square
-    # # checking screen boundaries to lock objects:
-    # if object_y == grid_y:
-    #     object_y = grid_y
-    # if object_y > grid_y + grid_height - Square:
-    #     object_y = grid_y + grid_height - Square
-    # # This generates the next object when the object hits the bottom of the y-axis
-    #     object_x = random.randint(grid_x, grid_x + grid_width - Square)
-    #     object_y = -Square  
-    #     figure = Figure(object_x, grid_y)
+    if player_y <= 0:
+        player_y = 0
+    elif player_y >= 500:
+        player_y = 500
 
-
-    # Drawing
-    # draw_grid()
-    # for i in range(4):
-    #     for j in range(4):
-    #         p = i * 4 + j
-    #         if p in figure.image():
-    #             pygame.draw.rect(screen, figure.color,
-    #                              [object_x + Square * j + 1,
-    #                               object_y + Square * i + 1,
-    #                               Square - 2, Square - 2])
+    player_x += change_in_x_pos
+    player_y += change_in_y_pos
 
     # timer_text = font.render("Time: " + str(elapsed_seconds), True, (255, 255, 255))
     # screen.blit(timer_text, (10, 10))
     screen.blit(bg, (0,0))
-    player()
+    player(player_x, player_y)
 
     pygame.display.flip()
 
