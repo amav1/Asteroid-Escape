@@ -1,6 +1,6 @@
 import random
 import pygame
-from block import Figure, Colors
+
 
 # Initialize Pygame
 pygame.init()
@@ -12,7 +12,7 @@ pygame.display.set_icon(win_icon)
 screen = pygame.display.set_mode((900,550))
 
 #Background image
-bg = pygame.image.load("./Assets/bg.jpg")
+bg = pygame.image.load("./Assets/Cbg.jpg")
 
 
 # # Create grid 
@@ -33,12 +33,12 @@ bg = pygame.image.load("./Assets/bg.jpg")
 # grid_height = ROWS * Square
 
 # background_color = (0, 0, 0)  
-object_color = (255, 0, 0)        
+# object_color = (255, 0, 0)        
 
 # object_x = random.randint(grid_x, grid_x + grid_width - Square)  
 # object_y = -Square  
-object_speed = 5
-is_paused = False
+# object_speed = 5
+# is_paused = False
 
 # creating the player object
 player_image = pygame.image.load("./Assets/spaceship.png")
@@ -60,7 +60,7 @@ font = pygame.font.SysFont('cambria', 30)
 # grid = create_grid(locked_positions)
 
 running = True 
-figure = None  
+# figure = None  
 
 while running:
     for event in pygame.event.get():
