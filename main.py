@@ -15,22 +15,22 @@ screen = pygame.display.set_mode((900,550))
 bg = pygame.image.load("./Assets/bg.jpg")
 
 
-# Create grid 
-def create_grid(locked_positions={}):
-    grid = [[(0,0,0) for x in range(10)] for x in range(20)]
+# # Create grid 
+# def create_grid(locked_positions={}):
+#     grid = [[(0,0,0) for x in range(10)] for x in range(20)]
  
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if (j,i) in locked_positions:
-                c = locked_positions[(j,i)]
-                grid[i][j] = c
-    return grid
+#     for i in range(len(grid)):
+#         for j in range(len(grid[i])):
+#             if (j,i) in locked_positions:
+#                 c = locked_positions[(j,i)]
+#                 grid[i][j] = c
+#     return grid
 
-# Draw grid
-ROWS, COLS = 12, 9
-Square = 53
-grid_width = COLS * Square
-grid_height = ROWS * Square
+# # Draw grid
+# ROWS, COLS = 12, 9
+# Square = 53
+# grid_width = COLS * Square
+# grid_height = ROWS * Square
 
 # background_color = (0, 0, 0)  
 object_color = (255, 0, 0)        
@@ -55,9 +55,9 @@ start_time = pygame.time.get_ticks()
 font = pygame.font.SysFont('cambria', 30)
 
 # Main game loop
-global grid
-locked_positions = {}
-grid = create_grid(locked_positions)
+# global grid
+# locked_positions = {}
+# grid = create_grid(locked_positions)
 
 running = True 
 figure = None  
