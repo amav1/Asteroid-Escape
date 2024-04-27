@@ -9,7 +9,7 @@ sh = 800
 win = pygame.display.set_mode((sw, sh))
 clock = pygame.time.Clock()
 
-class Object(pygame.sprite):
+class Object(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.Surface((50, 50))  
@@ -19,7 +19,7 @@ class Object(pygame.sprite):
         # placeholder for spaceship sprite movement
         pass
 
-class Asteroid(pygame.sprite):
+class Asteroid(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image1 = pygame.transform.scale(pygame.image.load('asteroids.png').convert_alpha(), (120, 120)) 
