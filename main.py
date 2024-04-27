@@ -99,10 +99,10 @@ def pause_game():
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:  
+                if event.key == pygame.K_SPACE:  
                     paused = False
                     #need to figure out how to save previous progress to continue
-        win.fill((0, 0, 0))
+        # win.fill((0, 0, 0))
         pause_text = font.render("Paused", True, (255, 255, 255))
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
@@ -119,7 +119,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p: 
+            if event.key == pygame.K_SPACE: 
                 paused = True
                 pause_game()
         # if event.type == pygame.KEYDOWN:
