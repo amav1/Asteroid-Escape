@@ -65,7 +65,12 @@ asteroids_on_screen = pygame.sprite.Group()
 
 
 new_asteroid = Asteroid(random.randint(0, sw), random.randint(0, sh))
+while pygame.sprite.spritecollide(new_asteroid, asteroids_on_screen, False):
+    new_asteroid.rect.x = random.randint(0, sw)
+    new_asteroid.rect.y = random.randint(0, sh)
+
 asteroids_on_screen.add(new_asteroid)
+
 
 
 def unpause_game():
