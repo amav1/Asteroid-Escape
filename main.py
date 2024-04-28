@@ -6,16 +6,15 @@ pygame.init()
 sw = 800
 sh = 800
 
-
 pygame.display.set_caption('Space Game')
 win_icon = pygame.image.load("./Assets/spaceship.png")
 pygame.display.set_icon(win_icon)
 win = pygame.display.set_mode((sw, sh))
 clock = pygame.time.Clock()
 
-# creating the player object
+
 player_image = pygame.image.load("./Assets/spaceship.png")
-player_x = 410
+player_x = 350
 player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
@@ -26,64 +25,76 @@ def player(player_x, player_y):
 class Object(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))  
-        self.rect = self.image.get_rect(center=(sw//2, sh//2))
+        self.image = pygame.Surface((50, 50))
+        self.rect = self.image.get_rect(center=(sw // 2, sh // 2))
 
 class bg_image(pygame.sprite.Sprite):
     def __init__(self):
-       super().__init__()
-       self.image = pygame.transform.scale(pygame.image.load("./Assets/Cbg.jpg").convert_alpha(), (800, 800))
-       self.rect = self.image.get_rect(center=(400, 400))
+        super().__init__()
+        self.image = pygame.transform.scale(pygame.image.load("./Assets/Cbg.jpg").convert_alpha(), (800, 800))
+        self.rect = self.image.get_rect(center=(400, 400))
+        self.prev_x = 400 
+        self.prev_y = 400  
+
 
 class Asteroid(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image1 = pygame.transform.scale(pygame.image.load('./Assets/asteroids.png').convert_alpha(), (120, 120)) 
+        self.image1 = pygame.transform.scale(pygame.image.load('./Assets/asteroids.png').convert_alpha(), (120, 120))
         self.image = self.image1.copy()
         self.rect = self.image.get_rect(center=(x, y))
         self.angle = 0
-        self.speed = random.randint(1, 3)  
+        self.speed = random.randint(1, 3)
+        self.prev_x = x  
+        self.prev_y = y  
 
     def update(self):
-        # rotates asteroids
-        self.angle += 0.5  
+        # rotate
+        self.angle += 0.5
         rotated_image = pygame.transform.rotate(self.image1, self.angle)
         self.rect = rotated_image.get_rect(center=self.rect.center)
         self.image = rotated_image
-        
+
         
         self.rect.y += self.speed
-        if self.rect.top > sh:  
-            self.rect.y = -120  # puts asteroid at the top of the screen
-            self.rect.x = random.randint(0, sw)  
+        if self.rect.top > sh:
+            self.rect.y = -120
+            self.rect.x = random.randint(0, sw)
+
+asteroids_on_screen = pygame.sprite.Group()
 
 
-asteroidz = Object()
-bg1_image = bg_image()
-all_sprites = pygame.sprite.Group()
-all_sprites.add(asteroidz)
-all_sprites.add(bg1_image)
+new_asteroid = Asteroid(random.randint(0, sw), random.randint(0, sh))
+asteroids_on_screen.add(new_asteroid)
 
-asteroids = pygame.sprite.Group()
+
+def unpause_game():
+    for asteroid in asteroids_on_screen:
+        asteroid.rect.x, asteroid.rect.y = asteroid.prev_x, asteroid.prev_y
+    bg_image.rect.x, bg_image.rect.y = bg_image.prev_x, bg_image.prev_y
+
+background = bg_image()
+
 
 #boundaries
 def create_asteroid():
-    side = random.choice(['top', 'bottom', 'left', 'right'])
-    if side == 'top':
-        x = random.randint(0, sw)
-        y = -120
-    elif side == 'bottom':
-        x = random.randint(0, sw)
-        y = sh + 120
-    elif side == 'left':
-        x = -120
-        y = random.randint(0, sh)
-    else:
-        x = sw + 120
-        y = random.randint(0, sh)
-    asteroid = Asteroid(x, y)
-    all_sprites.add(asteroid)
-    asteroids.add(asteroid)
+    if random.randint(0,100)< 0.5:
+        side = random.choice(['top', 'bottom', 'left', 'right'])
+        if side == 'top':
+            x = random.randint(0, sw)
+            y = -120
+        elif side == 'bottom':
+            x = random.randint(0, sw)
+            y = sh + 120
+        elif side == 'left':
+            x = -120
+            y = random.randint(0, sh)
+        else:
+            x = sw + 120
+            y = random.randint(0, sh)
+        asteroid = Asteroid(x, y)
+        asteroids_on_screen.add(asteroid)
+        asteroids_on_screen.add(asteroid)
 
 # timer
 start_ticks = pygame.time.get_ticks()
@@ -101,12 +112,11 @@ def pause_game():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:  
                     paused = False
-                    #need to figure out how to save previous progress to continue
-        # win.fill((0, 0, 0))
         pause_text = font.render("Paused", True, (255, 255, 255))
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
-     
+
+        
 
 # main game loop
 run = True
@@ -157,29 +167,22 @@ while run:
     seconds = remaining_seconds % 60
     timer_text = f"Time: {minutes:02}:{seconds:02}"
 
+
+       
     
-    if not paused:
-        all_sprites.update()
-
-        # collision between asteroids and sprite (WIP)
-        # hits = pygame.sprite.spritecollide(spaceship, asteroids, True)
-        # if hits:
-        #     print("Oops!") or print("Be careful!") or print("Watch it!!")
-
-        # asteroids
-        if random.randint(0, 100) < 1:  
-            create_asteroid()
+    create_asteroid()
+    
+    
+    win.blit(background.image, background.rect)
 
     
-    win.fill((0, 0, 0))  # clears screen
-    all_sprites.draw(win)
-
-    # draws timer
-    timer_surface = font.render(timer_text, True, (255, 255, 255))
-    timer_rect = timer_surface.get_rect(midtop=(sw // 2, 10))
-    win.blit(timer_surface, timer_rect)
-
     player(player_x, player_y)
+    asteroids_on_screen.update()
+    asteroids_on_screen.draw(win)
+
+    
+    timer_surface = font.render(timer_text, True, (255, 255, 255))
+    win.blit(timer_surface, (330, 10))
 
     pygame.display.update()
 
