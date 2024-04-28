@@ -78,7 +78,7 @@ background = bg_image()
 
 #boundaries
 def create_asteroid():
-    if random.randint(0,100)< 0.5:
+    if random.randint(0,200)< .0075:
         side = random.choice(['top', 'bottom', 'left', 'right'])
         if side == 'top':
             x = random.randint(0, sw)
@@ -166,12 +166,12 @@ while run:
     minutes = remaining_seconds // 60
     seconds = remaining_seconds % 60
     timer_text = f"Time: {minutes:02}:{seconds:02}"
-
-
-       
     
+    if remaining_seconds == 0:
+        run = False
+
+
     create_asteroid()
-    
     
     win.blit(background.image, background.rect)
 
