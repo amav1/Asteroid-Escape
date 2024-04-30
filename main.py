@@ -19,8 +19,13 @@ player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
 
+# def player(player_x, player_y):
+#     win.blit(player_image, (player_x, player_y))
 def player(player_x, player_y):
-    win.blit(player_image, (player_x, player_y))
+    player_sprite = pygame.sprite.Sprite()
+    player_sprite.image = player_image
+    player_sprite.rect = player_image.get_rect(topleft=(player_x, player_y))
+    return player_sprite
 
 class Object(pygame.sprite.Sprite):
     def __init__(self):
@@ -180,10 +185,19 @@ while run:
     
     win.blit(background.image, background.rect)
 
-    
-    player(player_x, player_y)
+
+    player_sprite = player(player_x, player_y)
+    win.blit(player_sprite.image, player_sprite.rect)
     asteroids_on_screen.update()
     asteroids_on_screen.draw(win)
+
+
+# collision = pygame.sprite.spritecollide(player, asteroids_on_screen, False)
+# if collision:
+#     run = False
+# if not run:
+#     win.fill((0,0,0))
+#     pygame.display.update()
 
     
     timer_surface = font.render(timer_text, True, (255, 255, 255))
