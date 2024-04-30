@@ -88,7 +88,7 @@ background = bg_image()
 
 #boundaries
 def create_asteroid():
-    if random.randint(0,200)< .0075:
+    if random.randint(0,400) < 0.075:
         side = random.choice(['top', 'bottom', 'left', 'right'])
         if side == 'top':
             x = random.randint(0, sw)
