@@ -134,6 +134,17 @@ def pause_game():
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
 
+def lost_game(): 
+    lost = True
+    while lost:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        lost_text = font.render("You Lost!", True, (255, 255, 255))
+        win.blit(lost_text, (sw // 2 -50, sh //2))
+        pygame.display.update()
+
 
 
  
