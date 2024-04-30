@@ -74,6 +74,17 @@ def pause_game():
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
 
+def lost_game(): 
+    lost = True
+    while lost:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        lost_text = font.render("You Lost!", True, (255, 255, 255))
+        win.blit(lost_text, (sw // 2 -50, sh //2))
+        pygame.display.update()
+
 start_ticks = pygame.time.get_ticks()
 font = pygame.font.SysFont(None, 36)
 
@@ -86,13 +97,13 @@ while run:
             run = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                change_in_x_pos = -3
+                change_in_x_pos = -6
             elif event.key == pygame.K_RIGHT:
-                change_in_x_pos = 3
+                change_in_x_pos = 6
             elif event.key == pygame.K_UP:
-                change_in_y_pos = -3
+                change_in_y_pos = -6
             elif event.key == pygame.K_DOWN:
-                change_in_y_pos = 3
+                change_in_y_pos = 6
             elif event.key == pygame.K_SPACE:
                 paused = True
                 pause_game()
@@ -122,10 +133,10 @@ while run:
     # Collision detection
     for asteroid in asteroids:
         Asteroid(asteroid['rect'].x, asteroid['rect'].y)
-        if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 50, 50)):
+        if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 30, 30)): # fix hitbox
             # Handle collision here, for example:
             # End game or deduct player health
-            pass
+            lost_game()
 
     update_asteroids()
     create_asteroid()
@@ -139,7 +150,7 @@ while run:
     timer_surface = font.render(timer_text, True, (255, 255, 255))
     win.blit(timer_surface, (330, 10))
 
-    if remaining_seconds is 110:
+    if remaining_seconds == 0:
         win.fill((0,0,0))
         pygame.display.flip()
         win_statement = "You won!"
