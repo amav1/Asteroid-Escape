@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 pygame.init()
 
@@ -31,7 +32,7 @@ class Object(pygame.sprite.Sprite):
 class bg_image(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load("./Assets/Cbg.jpg").convert_alpha(), (800, 800))
+        self.image = pygame.transform.scale(pygame.image.load("./Assets/bg.jpg").convert_alpha(), (800, 800))
         self.rect = self.image.get_rect(center=(400, 400))
         self.prev_x = 400 
         self.prev_y = 400  
@@ -60,6 +61,13 @@ class Asteroid(pygame.sprite.Sprite):
         if self.rect.top > sh:
             self.rect.y = -120
             self.rect.x = random.randint(0, sw)
+
+def is_collided_with(x, y, player_x, player_y):
+    distance = (math.sqrt(math.pow(x - player_x, 2) + (math.pow(y - player_y, 2))))
+    if distance < 30:
+        return True
+    else:
+        return False
 
 asteroids_on_screen = pygame.sprite.Group()
 
@@ -121,7 +129,9 @@ def pause_game():
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
 
-        
+
+
+ 
 
 # main game loop
 run = True
@@ -150,12 +160,17 @@ while run:
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 change_in_x_pos = 0
+            elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                change_in_y_pos = 0
 
-
+    #Collision logic
+    # if is_collided_with(x, y, player_x, player_y):
+    #     pass
+     
     if player_x <= 0:
         player_x = 0
-    elif player_x >= 900:
-        player_x = 900
+    elif player_x >= 800:
+        player_x = 800
 
     if player_y <= 0:
         player_y = 0
