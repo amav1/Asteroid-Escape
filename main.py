@@ -157,8 +157,6 @@ while run:
             elif event.key == pygame.K_DOWN:
                 change_in_y_pos = 6
             elif event.key == pygame.K_SPACE:
-                # paused = True
-                # pause_game()
                 pause_duration = pause_game()
                 start_ticks += pause_duration
         elif event.type == pygame.KEYUP:
