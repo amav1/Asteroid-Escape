@@ -61,6 +61,7 @@ def create_asteroid():
 
 def pause_game():
     paused = True
+    pause_ticks = pygame.time.get_ticks() 
     while paused:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -72,6 +73,7 @@ def pause_game():
         pause_text = font.render("Paused", True, (255, 255, 255))
         win.blit(pause_text, (sw // 2 - 50, sh // 2))
         pygame.display.update()
+    return pygame.time.get_ticks() - pause_ticks
 
 def lost_game(): 
     lost = True
@@ -126,8 +128,10 @@ while run:
             elif event.key == pygame.K_DOWN:
                 change_in_y_pos = 6
             elif event.key == pygame.K_SPACE:
-                paused = True
-                pause_game()
+                # paused = True
+                # pause_game()
+                pause_duration = pause_game()
+                start_ticks += pause_duration
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 change_in_x_pos = 0
