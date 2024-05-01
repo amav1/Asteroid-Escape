@@ -119,8 +119,8 @@ def lost_game():
         lost_text = font.render("You Lost!", True, (255, 255, 255))
         win.blit(lost_text, (350, 300))
 
-        replay_text = font.render("Press 'r' to restart", True, (255, 255, 255))
-        win.blit(replay_text, (300, 380))
+        replay_text = font.render("Press the r key to restart", True, (255, 255, 255))
+        win.blit(replay_text, (275, 380))
 
         pygame.display.update()
 
