@@ -18,11 +18,40 @@ player_x = 350
 player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
+default_player_size = (60,60)
 
 asteroids = []
 
 def player(player_x, player_y):
     win.blit(player_image, (player_x, player_y))
+
+def shrink_powerup(x, y):
+    flower_image = pygame.transform.scale(pygame.image.load('./Assets/satelitte.png').convert_alpha(), (40, 40))
+    win.blit(flower_image, (x,y))
+
+def blit_flowers():
+    for asteroid in asteroids:
+        asteroid['rect'].y += asteroid['speed']
+        if asteroid['rect'].y > sh:
+            asteroid['rect'].y = -120
+            asteroid['rect'].x = random.randint(0, sw)
+
+def power_Up():
+    if random.randint(0, 400) < 10:
+        side = random.choice(['top', 'bottom', 'left', 'right'])
+        if side == 'top':
+            x = random.randint(0, sw)
+            y = -120
+        elif side == 'bottom':
+            x = random.randint(0, sw)
+            y = sh + 120
+        elif side == 'left':
+            x = -120
+            y = random.randint(0, sh)
+        else:
+            x = sw + 120
+            y = random.randint(0, sh)
+        # .append({'rect': pygame.Rect(x, y, 120, 120), 'speed': random.randint(1, 3)})
 
 def bg_image():
     bg = pygame.transform.scale(pygame.image.load("./Assets/bg.jpg").convert_alpha(), (sw, sh))
@@ -176,7 +205,7 @@ while run:
         win.fill((0,0,0))
         pygame.display.flip()
         win_statement = "You won!"
-        win_surface = font.render(win_statement, True, (255, 255, 255))
+        win_surface = font.render(win_statement, True, (0, 0, 0))
         win.blit(win_surface, (330, 400))
         pygame.display.flip()
         run = False
