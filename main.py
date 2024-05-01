@@ -21,6 +21,7 @@ change_in_y_pos = 0
 default_player_size = (60,60)
 
 asteroids = []
+flowers = []
 
 def player(player_x, player_y):
     win.blit(player_image, (player_x, player_y))
@@ -30,11 +31,11 @@ def shrink_powerup(x, y):
     win.blit(flower_image, (x,y))
 
 def blit_flowers():
-    for asteroid in asteroids:
-        asteroid['rect'].y += asteroid['speed']
-        if asteroid['rect'].y > sh:
-            asteroid['rect'].y = -120
-            asteroid['rect'].x = random.randint(0, sw)
+    for flower in flowers:
+        flower['rect'].y += flower['speed']
+        if flower['rect'].y > sh:
+            flower['rect'].y = -120
+            flower['rect'].x = random.randint(0, sw)
 
 def power_Up():
     if random.randint(0, 400) < 10:
