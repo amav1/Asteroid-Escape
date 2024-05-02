@@ -7,7 +7,7 @@ pygame.init()
 sw = 800
 sh = 800
 
-pygame.display.set_caption('Asteroidz')
+pygame.display.set_caption('Asteroid Escape')
 win_icon = pygame.image.load("./Assets/spaceship.png")
 pygame.display.set_icon(win_icon)
 win = pygame.display.set_mode((sw, sh))
