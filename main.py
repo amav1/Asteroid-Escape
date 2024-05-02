@@ -23,8 +23,6 @@ boom_img = pygame.image.load("./Assets/boom.png").convert_alpha()
 
 asteroids = []
 flowers = []
-power_up_image = {}
-power_up_image['flower'] = pygame.image.load("./Assets/satelitte.png")
 
 def player(player_x, player_y):
     win.blit(player_image, (player_x, player_y))
@@ -55,17 +53,15 @@ def spawn_power_up():
 def handle_collisions():
     global power_up_active, power_up_timer, star_power_up_start_time
     for power_up in power_ups:
-        if not power_up_active:
-            if power_up['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
-                if power_up['image'] == star_image:
-                    power_up_active = True
-                    power_up_timer = pygame.time.get_ticks() // 1000
-                    star_power_up_start_time = power_up_timer  
-                    power_up['collected_time'] = power_up_timer
-        else:
-            if power_up['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
-                if power_up['image'] == star_image:
-                    power_ups.remove(power_up)
+        if power_up['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
+            if power_up['image'] == star_image:
+                power_up_active = True
+                power_up_timer = pygame.time.get_ticks() // 1000
+                star_power_up_start_time = power_up_timer  
+                power_up['collected_time'] = power_up_timer
+                power_ups.remove(power_up)  
+            else: 
+                power_ups.remove(power_up)
 
 
 def update_power_ups():
