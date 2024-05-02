@@ -19,6 +19,7 @@ player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
 default_player_size = (60,60)
+boom_img = pygame.image.load("./Assets/boom.png").convert_alpha()
 
 asteroids = []
 
@@ -179,13 +180,20 @@ while run:
         player_y = sh
 
     bg_image()
+
     player(player_x, player_y)
         
     # collision
     for asteroid in asteroids:
         Asteroid(asteroid['rect'].x, asteroid['rect'].y)
         if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 30, 30)):
+            asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
+            boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
+            boom_x = player_x - boom_img_scaled.get_width() / 2
+            boom_y = player_y - boom_img_scaled.get_height() / 2
+            win.blit(boom_img_scaled, (boom_x, boom_y))
             replay = lost_game()
+
 
     update_asteroids()
     create_asteroid()
@@ -200,12 +208,12 @@ while run:
     win.blit(timer_surface, (10, 10))
 
     if remaining_seconds == 0:
-        win.fill((0,0,0))
-        pygame.display.flip()
+        win.fill((0, 0, 0))
         win_statement = "You won!"
-        win_surface = font.render(win_statement, True, (0, 0, 0))
+        win_surface = font.render(win_statement, True, (255, 255, 255))
         win.blit(win_surface, (330, 400))
         pygame.display.flip()
+        pygame.time.delay(3000)
         run = False
 
 
