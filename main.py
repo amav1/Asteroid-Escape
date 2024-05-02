@@ -18,7 +18,8 @@ player_x = 350
 player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
-default_player_size = (60,60)
+original_size = (60, 60)
+mini_player_size = (40,40)
 boom_img = pygame.image.load("./Assets/boom.png").convert_alpha()
 
 asteroids = []
@@ -38,6 +39,7 @@ power_up_active = False
 power_up_timer = 0
 power_up_duration = 15  
 star_power_up_start_time = 0
+flower_power_up_start_time = 0
 
 def spawn_power_up():
     x = random.randint(0, sw - 40)
@@ -51,7 +53,7 @@ def spawn_power_up():
 
 
 def handle_collisions():
-    global power_up_active, power_up_timer, star_power_up_start_time
+    global power_up_active, power_up_timer, star_power_up_start_time, flower_power_up_start_time
     for power_up in power_ups:
         if power_up['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
             if power_up['image'] == star_image:
@@ -60,6 +62,12 @@ def handle_collisions():
                 star_power_up_start_time = power_up_timer  
                 power_up['collected_time'] = power_up_timer
                 power_ups.remove(power_up)  
+            elif power_up['image'] == flower_image:
+                power_up_active = True
+                power_up_timer = pygame.time.get_ticks() // 1000
+                flower_power_up_start_time = power_up_timer  
+                power_up['collected_time'] = power_up_timer
+                power_ups.remove(power_up)
             else: 
                 power_ups.remove(power_up)
 
@@ -80,6 +88,12 @@ def draw_power_ups():
     if power_up_active and pygame.time.get_ticks() // 1000 - star_power_up_start_time < power_up_duration:
         remaining_time = max(0, power_up_duration - (pygame.time.get_ticks() // 1000 - star_power_up_start_time))
         timer_text = f"Star Power-Up: {remaining_time} sec"
+        timer_surface = font.render(timer_text, True, (255, 255, 255))
+        win.blit(timer_surface, (sw - timer_surface.get_width() - 10, 10))
+
+    if power_up_active and pygame.time.get_ticks() // 1000 - flower_power_up_start_time < power_up_duration:
+        remaining_time = max(0, power_up_duration - (pygame.time.get_ticks() // 1000 - flower_power_up_start_time))
+        timer_text = f"Flower Power-Up: {remaining_time} sec"
         timer_surface = font.render(timer_text, True, (255, 255, 255))
         win.blit(timer_surface, (sw - timer_surface.get_width() - 10, 10))
 
@@ -212,7 +226,7 @@ while run:
                 change_in_y_pos = 0
             
             spawn_timer += 1
-            if spawn_timer >= 90:  # spawn frequency
+            if spawn_timer >= 60:  # spawn frequency
                 spawn_timer = 0
                 spawn_power_up()
 
@@ -221,6 +235,32 @@ while run:
                 if power_up['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)): 
                     if power_up['image'] == star_image:
                         power_up_active = True
+                    elif power_up['image'] == flower_image:
+                        power_up_active = True
+
+    for asteroid in asteroids:
+        if not power_up_active:  # check if active
+            if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
+                asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
+                boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
+                boom_x = player_x - boom_img_scaled.get_width() / 2
+                boom_y = player_y - boom_img_scaled.get_height() / 2
+                win.blit(boom_img_scaled, (boom_x, boom_y))
+                replay = lost_game()
+        else:
+            if power_up['image'] == star_image and asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)): 
+                asteroids.remove(asteroid)
+            elif power_up['image'] == flower_image:
+                player_size = mini_player_size
+                player_image = pygame.transform.scale(player_image, player_size)
+            elif power_up['image'] == flower_image and asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):
+                asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
+                boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
+                boom_x = player_x - boom_img_scaled.get_width() / 2
+                boom_y = player_y - boom_img_scaled.get_height() / 2
+                win.blit(boom_img_scaled, (boom_x, boom_y))
+
+
 
     player_x += change_in_x_pos
     player_y += change_in_y_pos
@@ -241,23 +281,6 @@ while run:
 
     for asteroid in asteroids:
         Asteroid(asteroid['rect'].x, asteroid['rect'].y, asteroid['angle'])
-
-        
-
-    for asteroid in asteroids:
-        if not power_up_active:  # check if active
-            if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)):  
-                asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
-                boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
-                boom_x = player_x - boom_img_scaled.get_width() / 2
-                boom_y = player_y - boom_img_scaled.get_height() / 2
-                win.blit(boom_img_scaled, (boom_x, boom_y))
-                replay = lost_game()
-        else:
-            if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 60, 60)): 
-                asteroids.remove(asteroid)
-
-
 
     update_asteroids()
     create_asteroid()
@@ -284,7 +307,10 @@ while run:
         pygame.time.delay(3000)
         run = False
 
-
+    
+    if not power_up_active:
+        player_size = original_size
+        player_image = pygame.transform.scale(player_image, player_size)
     pygame.display.update()
 
 pygame.quit()
