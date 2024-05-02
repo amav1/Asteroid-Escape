@@ -19,6 +19,7 @@ player_y = 480
 change_in_x_pos = 0
 change_in_y_pos = 0
 default_player_size = (60,60)
+boom_img = pygame.image.load("./Assets/boom.png").convert_alpha()
 
 asteroids = []
 flowers = []
@@ -60,13 +61,32 @@ def bg_image():
     bg = pygame.transform.scale(pygame.image.load("./Assets/bg.jpg").convert_alpha(), (sw, sh))
     win.blit(bg, (0, 0))
 
-def Asteroid(x, y):
+def Asteroid(x, y, angle):
     asteroid_image = pygame.transform.scale(pygame.image.load('./Assets/asteroids.png').convert_alpha(), (120, 120))
-    win.blit(asteroid_image, (x, y))
+    rotated_image = pygame.transform.rotate(asteroid_image, angle)
+    win.blit(rotated_image, (x, y))
 
+
+# def update_asteroids():
+#     for asteroid in asteroids:
+#         asteroid['rect'].y += asteroid['speed']
+#         if asteroid['rect'].y > sh:
+#             asteroid['rect'].y = -120
+#             asteroid['rect'].x = random.randint(0, sw)
+    
 def update_asteroids():
     for asteroid in asteroids:
         asteroid['rect'].y += asteroid['speed']
+        asteroid['angle'] += 0.5  
+        if asteroid['angle'] >= 360:
+            asteroid['angle'] -= 360
+
+        
+        asteroid['speed'] += 0.01
+        if asteroid['speed'] > 3:  # max speed
+            asteroid['speed'] = 3
+
+        # resets asteroid
         if asteroid['rect'].y > sh:
             asteroid['rect'].y = -120
             asteroid['rect'].x = random.randint(0, sw)
@@ -87,7 +107,7 @@ def create_asteroid():
         else:
             x = sw + 120
             y = random.randint(0, sh - 120)
-        angle = random.randint(0, 360)
+        angle = random.randint(0,360)
         asteroids.append({'rect': pygame.Rect(x, y, 120, 120), 'speed': random.randint(1, 3), 'angle': angle})
 
 
@@ -182,13 +202,35 @@ while run:
         player_y = sh
 
     bg_image()
+
     player(player_x, player_y)
+
+    for asteroid in asteroids:
+        Asteroid(asteroid['rect'].x, asteroid['rect'].y, asteroid['angle'])
+
         
     # collision
+    # for asteroid in asteroids:
+    #     Asteroid(asteroid['rect'].x, asteroid['rect'].y)
+    #     if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 30, 30)):
+    #         asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
+    #         boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
+    #         boom_x = player_x - boom_img_scaled.get_width() / 2
+    #         boom_y = player_y - boom_img_scaled.get_height() / 2
+    #         win.blit(boom_img_scaled, (boom_x, boom_y))
+    #         replay = lost_game()
+        
     for asteroid in asteroids:
-        Asteroid(asteroid['rect'].x, asteroid['rect'].y)
+        Asteroid(asteroid['rect'].x, asteroid['rect'].y, asteroid['angle'])
         if asteroid['rect'].colliderect(pygame.Rect(player_x, player_y, 30, 30)):
+            asteroid['rect'] = (pygame.Rect(player_x, player_y, 30, 30))
+            boom_img_scaled = pygame.transform.scale(boom_img, (int(boom_img.get_width() * 0.8), int(boom_img.get_height() * 0.8)))
+            boom_x = player_x - boom_img_scaled.get_width() / 2
+            boom_y = player_y - boom_img_scaled.get_height() / 2
+            win.blit(boom_img_scaled, (boom_x, boom_y))
             replay = lost_game()
+
+
 
     update_asteroids()
     create_asteroid()
@@ -203,12 +245,12 @@ while run:
     win.blit(timer_surface, (10, 10))
 
     if remaining_seconds == 0:
-        win.fill((0,0,0))
-        pygame.display.flip()
+        win.fill((0, 0, 0))
         win_statement = "You won!"
-        win_surface = font.render(win_statement, True, (0, 0, 0))
+        win_surface = font.render(win_statement, True, (255, 255, 255))
         win.blit(win_surface, (330, 400))
         pygame.display.flip()
+        pygame.time.delay(3000)
         run = False
 
 
