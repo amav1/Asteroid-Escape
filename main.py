@@ -226,7 +226,7 @@ while run:
                 change_in_y_pos = 0
             
             spawn_timer += 1
-            if spawn_timer >= 60:  # spawn frequency
+            if spawn_timer >= 50:  # spawn frequency
                 spawn_timer = 0
                 spawn_power_up()
 
