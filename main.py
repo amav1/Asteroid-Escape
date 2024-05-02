@@ -23,6 +23,8 @@ boom_img = pygame.image.load("./Assets/boom.png").convert_alpha()
 
 asteroids = []
 flowers = []
+power_up_image = {}
+power_up_image['flower'] = pygame.image.load("./Assets/satelitte.png")
 
 def player(player_x, player_y):
     win.blit(player_image, (player_x, player_y))
